@@ -2,8 +2,8 @@ module VecMap
 
 export unsupervised
 
-const Constraint = Union{"unconstrained", "orthogonal", Nothing}
-const Precision = Union{"fp16", "fp32", "fp64", Nothing}
+const Constraint = Union{String, Nothing}
+const Precision = Union{String, Nothing}
 const Seed = Union{Integer, Nothing}
 const Threshold = Union{Float64, Nothing}
 const CSLS = Union{Integer, Nothing}
@@ -13,8 +13,18 @@ function unsupervised(trg_in::String, trg_out::String, src_in::String, src_out::
   if cuda push!(flags, "--cuda") end
   if whiten push!(flags, "--whiten") end
   if verbose push!(flags, "--verbose") end
-  if !isnothing(constraints) push!(flags, "--$(constraints)") end
-  if !isnothing(precision) push!(flags, "--precision $(precision)") end
+  if !isnothing(constraints)
+    if constraints !== "orthogonal" && constraints !== "unconstrained"
+      error("Constraints must be \"orthogonal\" or \"unconstrained\"")
+    end
+    push!(flags, "--$(constraints)")
+  end
+  if !isnothing(precision)
+    if precision !== "fp16" && precision !== "fp32" && precision !== "fp64"
+      error("Precision must be \"fp16\", \"fp32\", or \"fp64\"")
+    end
+    push!(flags, "--precision $(precision)")
+  end
   if !isnothing(threshold) push!(flags, "--threshold $(threshold)") end
   if batch_size > 0 push!(flags, "--batch_size $(batch_size)") end
   if encoding !== "" push!(flags, "--encoding $(encoding)") end

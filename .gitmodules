@@ -1,0 +1,3 @@
+[submodule "src/python"]
+	path = src/python
+	url = https://github.com/artetxem/vecmap.git

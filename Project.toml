@@ -1,0 +1,7 @@
+name = "VecMap"
+uuid = "edbce39b-7977-4f2d-b0ff-6271c837582e"
+authors = ["amousavigourabi <amousavigourabi@gmail.com>"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
